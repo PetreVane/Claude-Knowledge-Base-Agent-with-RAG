@@ -310,8 +310,11 @@ function ChatArea() {
     "your-knowledge-base-id",
   );
 
+const knowledgeBaseId = process.env.NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID ?? "";
+const knowledgeBaseName = process.env.NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_NAME ?? "";
+
   const knowledgeBases: KnowledgeBase[] = [
-    { id: "your-knowledge-base-id", name: "Your KB Name" },
+    { id: knowledgeBaseId, name: knowledgeBaseName },
     // Add more knowledge bases as needed
   ];
 
