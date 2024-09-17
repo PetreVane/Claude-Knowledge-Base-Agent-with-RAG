@@ -9,8 +9,8 @@ jobs:
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github_actions_role-${{ secrets.AWS_REGION }}
+        with:           # arn:aws:iam::211125722935:role/github_actions_role-211125722935-us-east-1
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github_actions_role-${{ secrets.AWS_ACCOUNT_ID }}-${{ secrets.AWS_REGION }}
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Retrieve build arguments from Parameter Store
