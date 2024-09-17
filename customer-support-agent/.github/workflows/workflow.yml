@@ -1,0 +1,44 @@
+
+name: Docker Image CD on Amazon ECS
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: github_actions_role-${{ secrets.AWS_ACCOUNT_ID }}-${{ secrets.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Retrieve build arguments from Parameter Store
+        run: |
+          echo "ECR_REPOSITORY_NAME=$(aws ssm get-parameter --name '/github-actions/ecr_repository' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
+          echo "ECR_REGISTRY=$(aws ssm get-parameter --name '/github-actions/ecr_registry' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID=$(aws ssm get-parameter --name '/github-actions/bedrock_knowledge_base_id' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_NAME=$(aws ssm get-parameter --name '/github-actions/bedrock_knowledge_base_name' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_NAME:$IMAGE_TAG \
+            --build-arg NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID=$NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID \
+            --build-arg NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_NAME=$NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_NAME \
+            .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY_NAME:$IMAGE_TAG
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
