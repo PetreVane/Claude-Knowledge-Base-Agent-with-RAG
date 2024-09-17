@@ -50,3 +50,13 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY_NAME:$IMAGE_TAG
     
 
+<<<<<<< HEAD
+=======
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+>>>>>>> f83cf88eb4b0d5203ea0637f5afb615a61886cfa
