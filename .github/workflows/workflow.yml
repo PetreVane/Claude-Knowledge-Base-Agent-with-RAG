@@ -31,21 +31,26 @@ jobs:
         run: |
           echo "ECR_REPOSITORY_NAME=$(aws ssm get-parameter --name '/github-actions/ecr_repository' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
           echo "ECR_REGISTRY=$(aws ssm get-parameter --name '/github-actions/ecr_registry' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
-          echo "NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID=$(aws ssm get-parameter --name '/github-actions/bedrock_knowledge_base_id' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
-          echo "NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_NAME=$(aws ssm get-parameter --name '/github-actions/bedrock_knowledge_base_name' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
+          echo "BEDROCK_KNOWLEDGE_BASE_ID=$(aws ssm get-parameter --name '/github-actions/bedrock_knowledge_base_id' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
+          echo "BEDROCK_KNOWLEDGE_BASE_NAME=$(aws ssm get-parameter --name '/github-actions/bedrock_knowledge_base_name' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
 
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v1 # change to v2 so that the Docker credentials are no longer exposed to logs
 
       - name: Build, tag, and push image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: claude-kb-agent-rag-${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_NAME:$IMAGE_TAG \
-            --build-arg NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID=$NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID \
-            --build-arg NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_NAME=$NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_NAME \
+          # Gets the date and time
+          DATE_TIME=$(date + '%Y%m%d-%H%M%S')
+          # Constructing the full tag
+          FULL_IMAGE_TAG="STAGING-${IMAGE_TAG}-${DATE_TIME}-${GITHUB_SHA::4}"
+          # Builds the image
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_NAME:$FULL_IMAGE_TAG \
+            --build-arg NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID=$BEDROCK_KNOWLEDGE_BASE_ID \
+            --build-arg NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_NAME=$BEDROCK_KNOWLEDGE_BASE_NAME \
             .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY_NAME:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY_NAME:$FULL_IMAGE_TAG
     
