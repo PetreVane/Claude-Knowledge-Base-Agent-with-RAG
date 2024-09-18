@@ -1,29 +1,10 @@
 
-# Anthropic Quickstarts
-
+# Claude Knowledge-Base Agent with RAG
+## *This is a modified clone of Anthropic Customer Support Agent*
 Anthropic Quickstarts is a collection of projects designed to help developers quickly get started with building deployable applications using the Anthropic API. Each quickstart provides a foundation that you can easily build upon and customize for your specific needs.
 
-## Getting Started
+## [Go to Original Customer Support Agent Quickstart](https://github.com/anthropics/anthropic-quickstarts)
 
-To use these quickstarts, you'll need an Anthropic API key. If you don't have one yet, you can sign up for free at [console.anthropic.com](https://console.anthropic.com).
-
-## Available Quickstarts
-
-### 1. Customer Support Agent
-
-Our first quickstart project is a customer support agent powered by Claude. This project demonstrates how to leverage Claude's natural language understanding and generation capabilities to create an AI-assisted customer support system with access to a knowledge base.
-
-[Go to Customer Support Agent Quickstart](./customer-support-agent)
-
-## General Usage
-
-Each quickstart project comes with its own README and setup instructions. Generally, you'll follow these steps:
-
-1. Clone this repository
-2. Navigate to the specific quickstart directory
-3. Install the required dependencies
-4. Set up your Anthropic API key as an environment variable
-5. Run the quickstart application
 
 ## Explore Further
 
@@ -33,24 +14,10 @@ To deepen your understanding of working with Claude and the Anthropic API, check
 - [Anthropic Cookbook](https://github.com/anthropics/anthropic-cookbook) - A collection of code snippets and guides for common tasks
 - [Anthropic API Fundamentals Course](https://github.com/anthropics/courses/tree/master/anthropic_api_fundamentals)
 
-## Contributing
 
-We welcome contributions to the Anthropic Quickstarts repository! If you have ideas for new quickstart projects or improvements to existing ones, please open an issue or submit a pull request.
+# Claude Knowledge Base Agent
 
-## Community and Support
-
-- Join [Anthropic Discord community](https://www.anthropic.com/discord) for discussions and support
-- Check out the [Anthropic support documentation](https://support.anthropic.com) for additional help
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](customer-support-agent/LICENSE) file for details.
-
-
-
-# Claude Customer Support Agent
-
-An advanced, fully customizable customer support chat interface powered by Claude and leveraging Amazon Bedrock Knowledge Bases for knowledge retrieval.
+An advanced, fully customizable chat interface powered by Claude and leveraging Amazon Bedrock Knowledge Bases for knowledge retrieval.
 ![preview](tutorial/preview.png)
 
 ## Key Features
@@ -325,3 +292,8 @@ This project is a prototype and is provided on an "as-is" basis. It is not inten
 - No warranties or guarantees of any kind are provided, either expressed or implied.
 - Support for this prototype may be limited or unavailable.
 - Use of this prototype is at your own risk. We encourage you to report any issues or provide feedback to help improve future versions.
+
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](customer-support-agent/LICENSE) file for details.
