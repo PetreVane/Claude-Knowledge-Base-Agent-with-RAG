@@ -44,7 +44,7 @@ jobs:
           IMAGE_TAG: claude-kb-agent-rag-${{ github.sha }}
         run: |
           # Gets the date and time
-          DATE_TIME=$(date + '%Y%m%d-%H%M%S')
+          DATE_TIME=$(date +'%Y%m%d-%H%M%S')
           # Constructing the full tag
           FULL_IMAGE_TAG="STAGING-${IMAGE_TAG}-${DATE_TIME}-${GITHUB_SHA::4}"
           # Builds the image
