@@ -43,31 +43,14 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: claude-kb-agent-rag
         run: |
-          # Debug: Print environment variables
-          echo "ECR_REGISTRY: $ECR_REGISTRY"
-          echo "ECR_REPOSITORY_NAME: $ECR_REPOSITORY_NAME"
-          echo "IMAGE_TAG: $IMAGE_TAG"
-
           # Gets the date and time
           DATE_TIME=$(date +'%Y%m%d-%H%M%S')
-
           # Constructing the full tag
-          FULL_IMAGE_TAG="STAGING-${IMAGE_TAG}:latest"
-
-          # Debug: Print constructed tag
-          echo "FULL_IMAGE_TAG: $FULL_IMAGE_TAG"
-
+          FULL_IMAGE_TAG="STAGING-${IMAGE_TAG}-${DATE_TIME}-${GITHUB_SHA::4}"
           # Builds the image
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_NAME:$FULL_IMAGE_TAG \
             --build-arg NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID=$BEDROCK_KNOWLEDGE_BASE_ID \
             --build-arg NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_NAME=$BEDROCK_KNOWLEDGE_BASE_NAME \
             .
-
-          # Debug: Print docker build command
-          echo "Docker build command:"
-          echo "docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_NAME:$FULL_IMAGE_TAG ..."
-
-          # Push the image
           docker push $ECR_REGISTRY/$ECR_REPOSITORY_NAME:$FULL_IMAGE_TAG
-      
     
