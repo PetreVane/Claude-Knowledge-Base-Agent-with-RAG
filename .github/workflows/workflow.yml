@@ -52,7 +52,7 @@ jobs:
           DATE_TIME=$(date +'%Y%m%d-%H%M%S')
 
           # Constructing the full tag
-          FULL_IMAGE_TAG="STAGING-${IMAGE_TAG}-${DATE_TIME}:latest"
+          FULL_IMAGE_TAG="STAGING-${IMAGE_TAG}:latest"
 
           # Debug: Print constructed tag
           echo "FULL_IMAGE_TAG: $FULL_IMAGE_TAG"
