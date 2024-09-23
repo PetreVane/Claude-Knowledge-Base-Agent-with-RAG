@@ -31,8 +31,8 @@ jobs:
         run: |
           echo "ECR_REPOSITORY_NAME=$(aws ssm get-parameter --name '/github-actions/ecr_repository_name' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
           echo "ECR_REGISTRY=$(aws ssm get-parameter --name '/github-actions/ecr_registry' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
-          echo "NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID=$(aws ssm get-parameter --name '/github-actions/bedrock_knowledge_base_id' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
-          echo "NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_NAME=$(aws ssm get-parameter --name '/github-actions/bedrock_knowledge_base_name' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID=$(aws ssm get-parameter --name '/bedrock/bedrock_knowledge_base_id' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_NAME=$(aws ssm get-parameter --name '/bedrock/bedrock_knowledge_base_name' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
 
       - name: Login to Amazon ECR
         id: login-ecr
