@@ -41,12 +41,12 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: claude-kb-agent-rag
+          IMAGE_TAG: claude-kb-agent-rag:latest
         run: |
           # Gets the date and time
           # DATE_TIME=$(date +'%Y%m%d-%H%M%S')
           # Constructing the full tag
-          FULL_IMAGE_TAG="DEV-${IMAGE_TAG}-${GITHUB_SHA::4}"
+          FULL_IMAGE_TAG="DEV-${GITHUB_SHA::4}-${IMAGE_TAG}"
           # Builds the image
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_NAME:$FULL_IMAGE_TAG \
             --build-arg NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID=$NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID \
