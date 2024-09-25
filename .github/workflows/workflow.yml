@@ -33,6 +33,7 @@ jobs:
           echo "ECR_REGISTRY=$(aws ssm get-parameter --name '/github-actions/ecr_registry' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
           echo "NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID=$(aws ssm get-parameter --name '/bedrock/bedrock_knowledge_base_id' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
           echo "NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_NAME=$(aws ssm get-parameter --name '/bedrock/bedrock_knowledge_base_name' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
+          echo "REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -49,6 +50,7 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_NAME:$FULL_IMAGE_TAG \
             --build-arg NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID=$NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID \
             --build-arg NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_NAME=$NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_NAME \
+            --build-arg REGION=$REGION \
             .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY_NAME:$FULL_IMAGE_TAG
     
