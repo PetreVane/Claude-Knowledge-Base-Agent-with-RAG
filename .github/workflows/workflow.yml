@@ -34,6 +34,9 @@ jobs:
           echo "NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID=$(aws ssm get-parameter --name '/bedrock/bedrock_knowledge_base_id' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
           echo "NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_NAME=$(aws ssm get-parameter --name '/bedrock/bedrock_knowledge_base_name' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
           echo "REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
+          echo "ANTHROPIC_API_KEY=$(aws ssm get-parameter --name '/bedrock/anthropic_api_key' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
+          echo "BAWS_ACCESS_KEY_ID=$(aws ssm get-parameter --name '/bedrock/user_access_key_id' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
+          echo "BAWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name '/bedrock/user_access_key_secret' --query 'Parameter.Value' --output text)" >> $GITHUB_ENV
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -51,6 +54,9 @@ jobs:
             --build-arg NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID=$NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_ID \
             --build-arg NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_NAME=$NEXT_PUBLIC_BEDROCK_KNOWLEDGE_BASE_NAME \
             --build-arg REGION=$REGION \
+            --build-arg ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY \
+            --build-arg BAWS_ACCESS_KEY_ID=$BAWS_ACCESS_KEY_ID \
+            --build-arg BAWS_SECRET_ACCESS_KEY=$BAWS_SECRET_ACCESS_KEY \
             .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY_NAME:$FULL_IMAGE_TAG
     
