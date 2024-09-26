@@ -35,7 +35,7 @@ RUN npm run build
 EXPOSE 3000
 
 # Define the command to run the app
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]
 
 # 1.  Build a docker image with this command:
 # docker build \
